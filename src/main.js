@@ -13,7 +13,9 @@ const TIMEOUT = 5;
 
 // this contains stream keys + data
 const streams = {
+    // this is key of the stream
     'AQAAAEiqpnFVIEhIj_yuyNW9I40AAAAA': {
+        // this defines variable to be sent to Tandem. In case below the value is in range [15, 25]
         temperature: {
             min: 15,
             max: 25
