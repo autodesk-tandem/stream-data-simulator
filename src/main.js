@@ -9,8 +9,23 @@ import { createToken } from './auth.js';
 const APS_CLIENT_ID = 'YOUR_CLIENT_ID';
 const APS_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const FACILITY_URN = 'YOUR_FACILITY_URN';
-const STREAM_ID = 'YOUR_STREAM_ID';
 const TIMEOUT = 5;
+
+// this contains stream keys + data
+const streams = {
+    'AQAAAEiqpnFVIEhIj_yuyNW9I40AAAAA': {
+        temperature: {
+            min: 15,
+            max: 25
+        }
+    },
+    'AQAAAFgCMfk2rkoSjwJxwXs4Bh0AAAAA': {
+        temperature: {
+            min: 15,
+            max: 25
+        }
+    }
+}
 
 async function sendDataToStream() {
     console.log(`sendDataToStream`);
@@ -18,11 +33,22 @@ async function sendDataToStream() {
         'data:read data:write');
     
     const modelID = FACILITY_URN.replace('urn:adsk.dtt:', 'urn:adsk.dtm:');
-    const payload = {
-        id: STREAM_ID,
-        temperature: 15 + Math.random() * 10 // range [15, 25]
-    };
+    const payload = [];
 
+    for (const streamId in streams) {
+        const streamInputs = streams[streamId];
+        const streamData = {
+            id: streamId
+        };
+
+        for (const streamInputName in streamInputs) {
+            const streamInput = streamInputs[streamInputName];
+            const value = streamInput.min + Math.random() * (streamInput.max - streamInput.min);
+    
+            streamData[streamInputName] = value;
+        }
+        payload.push(streamData);
+    }
     const response = await fetch(`https://tandem.autodesk.com/api/v1/timeseries/models/${modelID}/webhooks/generic`, {
         method: 'POST',
         headers: {
@@ -34,11 +60,14 @@ async function sendDataToStream() {
     if (response.status === 403) {
         throw new Error(`failed to authorize, check your token/scope.`);
     }
-    console.log(`  data sent to stream: ${payload.temperature}`);
+    console.log(`  number of updated streams: ${payload.length}`);
 }
 
 function main() {
-    setInterval(sendDataToStream, TIMEOUT * 60 * 1000);
+    sendDataToStream();
+    if (TIMEOUT > 0) {
+        setInterval(sendDataToStream, TIMEOUT * 60 * 1000);
+    }
 }
 
 main();
