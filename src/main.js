@@ -27,13 +27,20 @@ const streams = {
             max: 25
         }
     }
-}
+};
+
+let token;
+let expires_at;
 
 async function sendDataToStream() {
     console.log(`sendDataToStream`);
-    const token = await createToken(APS_CLIENT_ID, APS_CLIENT_SECRET,
-        'data:read data:write');
-    
+    // check if token is valid and not expired (5s tolerance)
+    if (!token || expires_at < (Date.now() - 5000)) {
+        token = await createToken(APS_CLIENT_ID, APS_CLIENT_SECRET,
+            'data:read data:write');
+        expires_at = Date.now() + token.expires_in * 1000;
+        console.debug(`token expiration: ${expires_at}`);
+    }
     const modelID = FACILITY_URN.replace('urn:adsk.dtt:', 'urn:adsk.dtm:');
     const payload = [];
 
@@ -54,7 +61,7 @@ async function sendDataToStream() {
     const response = await fetch(`https://tandem.autodesk.com/api/v1/timeseries/models/${modelID}/webhooks/generic`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token.access_token}`
         },
         body: JSON.stringify(payload)
     });

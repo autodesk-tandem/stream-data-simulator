@@ -1,9 +1,16 @@
 /**
+ * @typedef {object} AuthToken
+ * @property {string} access_token
+ * @property {number} expires_in
+ * @property {string} token_type
+ */
+
+/**
  * Creates 2-legged token using provided inputs.
  * @param {string} clientID 
  * @param {string} clientSecret 
  * @param {string} scope 
- * @returns {Promise<string>}
+ * @returns {Promise<AuthToken>}
  */
 export async function createToken(clientID, clientSecret, scope) {
     const auth = Buffer.from(`${clientID}:${clientSecret}`).toString('base64');
@@ -21,5 +28,5 @@ export async function createToken(clientID, clientSecret, scope) {
 
     const token = await tokenResponse.json();
 
-    return token.access_token;
+    return token;
 }
