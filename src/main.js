@@ -1,14 +1,14 @@
 /*
     This example can be used to push data to given stream within the facility.
-    
-    It uses 2-legged authentication - this requires that application is added to facility as service.
 */
-import { createToken } from './auth.js';
 
 // update values below according to your environment
+// facility URN can be obtained from URL - it's text after last /
+// the token can be obtained using Streams - Webhook Integration command
 const APS_CLIENT_ID = 'YOUR_CLIENT_ID';
 const APS_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const FACILITY_URN = 'YOUR_FACILITY_URN';
+const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
 const TIMEOUT = 5;
 
 // this contains stream keys + template for data we want to send
@@ -29,21 +29,8 @@ const streamDataTemplate = {
     }
 };
 
-// used to store token & its expiration
-let token;
-let expires_at;
-
 async function sendDataToStream() {
     console.log(`sendDataToStream`);
-    // check if token is valid and not expired
-    const now = Date.now();
-
-    if (!token || expires_at < now) {
-        token = await createToken(APS_CLIENT_ID, APS_CLIENT_SECRET,
-            'data:read data:write');
-        expires_at = now + (token.expires_in - 5) * 1000; // we subtract 5s from token expiration time just to be sure
-        console.debug(`token expiration: ${expires_at}`);
-    }
     // stream data are stored in default model which has same id as facility
     const modelID = FACILITY_URN.replace('urn:adsk.dtt:', 'urn:adsk.dtm:');
     const payload = [];
@@ -66,7 +53,7 @@ async function sendDataToStream() {
     const response = await fetch(`https://developer.api.autodesk.com/tandem/v1/timeseries/models/${modelID}/webhooks/generic`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token.access_token}`
+            'Authorization': AUTH_TOKEN
         },
         body: JSON.stringify(payload)
     });
