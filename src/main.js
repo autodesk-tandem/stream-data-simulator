@@ -1,5 +1,5 @@
 /*
-    This example can be used to push  data to given stream within the facility.
+    This example can be used to push data to given stream within the facility.
     
     It uses 2-legged authentication - this requires that application is added to facility as service.
 */
@@ -11,7 +11,7 @@ const APS_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const FACILITY_URN = 'YOUR_FACILITY_URN';
 const TIMEOUT = 5;
 
-// this contains stream keys + data
+// this contains stream keys + template for data we want to send
 const streams = {
     // this is key of the stream
     'AQAAAEiqpnFVIEhIj_yuyNW9I40AAAAA': {
@@ -29,16 +29,19 @@ const streams = {
     }
 };
 
+// used to store token & its expiration
 let token;
 let expires_at;
 
 async function sendDataToStream() {
     console.log(`sendDataToStream`);
-    // check if token is valid and not expired (5s tolerance)
-    if (!token || expires_at < (Date.now() - 5000)) {
+    // check if token is valid and not expired
+    const now = Date.now();
+
+    if (!token || expires_at < now) {
         token = await createToken(APS_CLIENT_ID, APS_CLIENT_SECRET,
             'data:read data:write');
-        expires_at = Date.now() + token.expires_in * 1000;
+        expires_at = now + (token.expires_in - 5) * 1000; // we subtract 5s from token expiration time just to be sure
         console.debug(`token expiration: ${expires_at}`);
     }
     const modelID = FACILITY_URN.replace('urn:adsk.dtt:', 'urn:adsk.dtm:');
