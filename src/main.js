@@ -5,8 +5,6 @@
 // update values below according to your environment
 // facility URN can be obtained from URL - it's text after last /
 // the token can be obtained using Streams - Webhook Integration command
-const APS_CLIENT_ID = 'YOUR_CLIENT_ID';
-const APS_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
 const FACILITY_URN = 'YOUR_FACILITY_URN';
 const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
 const TIMEOUT = 5;
