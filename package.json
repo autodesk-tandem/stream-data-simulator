@@ -1,5 +1,5 @@
 {
-    "name": "stream-device-simulator",
+    "name": "stream-data-simulator",
     "version": "1.0.0",
     "type": "module",
     "scripts": {

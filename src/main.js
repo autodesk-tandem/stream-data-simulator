@@ -12,7 +12,7 @@ const FACILITY_URN = 'YOUR_FACILITY_URN';
 const TIMEOUT = 5;
 
 // this contains stream keys + template for data we want to send
-const streams = {
+const streamDataTemplate = {
     // this is key of the stream
     'AQAAAEiqpnFVIEhIj_yuyNW9I40AAAAA': {
         // this defines variable to be sent to Tandem. In case below the value is in range [15, 25]
@@ -44,11 +44,13 @@ async function sendDataToStream() {
         expires_at = now + (token.expires_in - 5) * 1000; // we subtract 5s from token expiration time just to be sure
         console.debug(`token expiration: ${expires_at}`);
     }
+    // stream data are stored in default model which has same id as facility
     const modelID = FACILITY_URN.replace('urn:adsk.dtt:', 'urn:adsk.dtm:');
     const payload = [];
 
-    for (const streamId in streams) {
-        const streamInputs = streams[streamId];
+    // iterate through stream template
+    for (const streamId in streamDataTemplate) {
+        const streamInputs = streamDataTemplate[streamId];
         const streamData = {
             id: streamId
         };

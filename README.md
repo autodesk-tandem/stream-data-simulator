@@ -19,6 +19,6 @@ The examples use 2-legged authentication in case when authentication is needed. 
   const FACILITY_URN = 'YOUR_FACILITY_URN';
   const TIMEOUT = 5;
   ```
-4. Review and update `streams` variable as needed. This contains stream data to be sent.
+4. Review and update `streamDataTemplate` variable as needed. This defines data to be send to the streams.
    **Note** You need to use stream keys according to your facility.
 5. Save your changes and execute using `npm start`. Use **Ctrl+C** to stop the script.
