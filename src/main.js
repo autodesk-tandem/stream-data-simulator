@@ -63,7 +63,7 @@ async function sendDataToStream() {
         }
         payload.push(streamData);
     }
-    const response = await fetch(`https://tandem.autodesk.com/api/v1/timeseries/models/${modelID}/webhooks/generic`, {
+    const response = await fetch(`https://developer.api.autodesk.com/tandem/v1/timeseries/models/${modelID}/webhooks/generic`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token.access_token}`
