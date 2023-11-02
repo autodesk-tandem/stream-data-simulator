@@ -7,6 +7,7 @@
 // the token can be obtained using Streams - Webhook Integration command
 const FACILITY_URN = 'YOUR_FACILITY_URN';
 const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
+const BASE_PATH = 'https://developer.api.autodesk.com/tandem/v1';
 const TIMEOUT = 5;
 
 // this contains stream keys + template for data we want to send
@@ -48,7 +49,7 @@ async function sendDataToStream() {
         }
         payload.push(streamData);
     }
-    const response = await fetch(`https://developer.api.autodesk.com/tandem/v1/timeseries/models/${modelID}/webhooks/generic`, {
+    const response = await fetch(`${BASE_PATH}/timeseries/models/${modelID}/webhooks/generic`, {
         method: 'POST',
         headers: {
             'Authorization': AUTH_TOKEN
@@ -58,6 +59,9 @@ async function sendDataToStream() {
 
     if (response.status === 403) {
         throw new Error(`failed to authorize, check your token/scope.`);
+    }
+    if (response.status !== 200) {
+        console.warn(`unexpected response: ${response.status}`);
     }
     console.log(`  number of updated streams: ${payload.length}`);
 }
