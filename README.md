@@ -7,8 +7,7 @@ This repository contains simple example how to send data to stream in the facili
 3. On top of the file there is block with global variables. Replace those variables according to your environment:
   ``` js
   // update values below according to your environment
-  const APS_CLIENT_ID = 'YOUR_CLIENT_ID';
-  const APS_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+  const BASE_PATH = 'https://developer.api.autodesk.com/tandem/v1';
   const FACILITY_URN = 'YOUR_FACILITY_URN';
   const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
   const TIMEOUT = 5;
