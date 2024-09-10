@@ -43,9 +43,19 @@ async function sendDataToStream() {
 
         for (const streamInputName in streamInputs) {
             const streamInput = streamInputs[streamInputName];
-            const value = streamInput.min + Math.random() * (streamInput.max - streamInput.min);
-    
-            streamData[streamInputName] = value;
+            let value;
+
+            if (streamInput.values) {
+                const index = Math.floor(Math.random() * streamInput.values.length);
+
+                value = streamInput.values[index];
+            }
+            if (streamInput.min !== undefined && streamInput.max !== undefined) {
+                value = streamInput.min + Math.random() * (streamInput.max - streamInput.min);
+            }
+            if (value !== undefined) {
+                streamData[streamInputName] = value;
+            }
         }
         payload.push(streamData);
     }
