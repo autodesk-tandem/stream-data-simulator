@@ -18,6 +18,12 @@ const streamDataTemplate = {
         temperature: {
             min: 15,
             max: 25
+        },
+    },
+    'AQAAAJoBmfwOwUgRirX5mUfyBfMAAAAA': {
+        // In this case the value is one of the values from the array
+        status: {
+            values: [ 'ON', 'OFF' ]
         }
     },
     'AQAAAFgCMfk2rkoSjwJxwXs4Bh0AAAAA': {
