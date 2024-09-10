@@ -7,7 +7,7 @@
 // the token can be obtained using Streams - Webhook Integration command
 const FACILITY_URN = 'YOUR_FACILITY_URN';
 const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
-const BASE_PATH = 'https://developer.api.autodesk.com/tandem/v1';
+const BASE_PATH = 'https://tandem.autodesk.com/api/v1';
 const TIMEOUT = 5;
 
 // this contains stream keys + template for data we want to send
