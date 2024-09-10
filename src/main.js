@@ -8,7 +8,7 @@
 const FACILITY_URN = 'YOUR_FACILITY_URN';
 const AUTH_TOKEN = 'YOUR_AUTHORIZATION_TOKEN';
 const BASE_PATH = 'https://tandem.autodesk.com/api/v1';
-const TIMEOUT = 5;
+const TIMEOUT = 5; // in minutes
 
 // this contains stream keys + template for data we want to send
 const streamDataTemplate = {
